@@ -3,28 +3,53 @@ import { nanoid } from "nanoid";
 import { Die } from "./Die.jsx";
 
 function App() {
-  const [dice, setDice] = useState([1, 2, 3, 4, 5, 6, 1, 2, 3, 4]);
+  const [dice, setDice] = useState(getAllRandomDice());
 
-  const generateRandomNo = () => {
+  function generateRandomNo() {
     return Math.ceil(Math.random() * 6);
-  };
+  }
 
-  const getAllRandomDice = () => {
-    const randomDice = [];
-    for (let i = 0; i < 10; i++) {
-      randomDice.push(generateRandomNo());
-    }
+  function getAllRandomDice() {
+    const arr = Array.from({ length: 10 }).map(() => {
+      return { id: nanoid(), value: generateRandomNo(), isHeld: false };
+    });
 
-    return randomDice;
-  };
+    return arr;
+  }
 
-  console.log(getAllRandomDice());
+  function handleRoll() {
+    setDice(getAllRandomDice());
+  }
+
+  function toggleDice(id) {
+    setDice((prev) => {
+      return prev.map((item) => {
+        return item.id === id
+          ? { ...item, isHeld: item.isHeld ? false : true }
+          : { ...item };
+      });
+    });
+  }
 
   const diceElement = dice.map((item) => {
-    return <Die key={nanoid()} value={item} />;
+    return (
+      <Die
+        key={item.id}
+        value={item.value}
+        isHeld={item.isHeld}
+        toggleDice={() => toggleDice(item.id)}
+      />
+    );
   });
 
-  return <main>{diceElement}</main>;
+  return (
+    <main>
+      <div className="dice-el">{diceElement}</div>
+      <button className="roll-btn" onClick={handleRoll}>
+        Roll
+      </button>
+    </main>
+  );
 }
 
 export default App;

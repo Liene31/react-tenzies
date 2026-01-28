@@ -24,18 +24,22 @@ body {
 }
 
 main {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  justify-content: center;
-  align-content: center;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
   background-color: #f5f5f5;
   height: 100%;
   border-radius: 5px;
 }
 
-button {
-  width: 35px;
+.dice-el {
+  display: grid;
+  grid-template-columns: 35px 35px 35px 35px 35px;
+  gap: 0.5rem;
+}
+
+button.dice-btn {
   height: 35px;
   background-color: #ffffff;
   border: none;
@@ -45,5 +49,18 @@ button {
   color: #2b283a;
   font-size: 1.2rem;
   font-weight: bold;
+  cursor: pointer;
+}
+
+button.roll-btn {
+  width: 95px;
+  height: 35px;
+  background-color: #5035ff;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
   cursor: pointer;
 }
