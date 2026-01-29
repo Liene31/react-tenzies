@@ -1,9 +1,13 @@
 import { useState } from "react";
+import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
 import { Die } from "./Die.jsx";
 
 function App() {
-  const [dice, setDice] = useState(getAllRandomDice());
+  //adding function () => in useState prevents
+  //calling the getAllRandomDice() every time the state changes ->
+  //on roll and dice clicks
+  const [dice, setDice] = useState(() => getAllRandomDice());
 
   function generateRandomNo() {
     return Math.ceil(Math.random() * 6);
@@ -17,14 +21,22 @@ function App() {
     return arr;
   }
 
+  const gameWon =
+    dice.every((die) => die.isHeld) &&
+    dice.every((die) => die.value === dice[0].value);
+
   function handleRoll() {
-    setDice((prev) => {
-      return prev.map((item) => {
-        return item.isHeld === true
-          ? { ...item }
-          : { ...item, value: generateRandomNo() };
+    if (gameWon) {
+      setDice(getAllRandomDice());
+    } else {
+      setDice((prev) => {
+        return prev.map((item) => {
+          return item.isHeld === true
+            ? { ...item }
+            : { ...item, value: generateRandomNo() };
+        });
       });
-    });
+    }
   }
 
   function toggleDice(id) {
@@ -50,14 +62,16 @@ function App() {
 
   return (
     <main>
+      {gameWon && <Confetti />}
       <h1>Tenzies</h1>
       <p>
         Roll until all dice are the same. Click each die to freeze it at its
         current value between rolls.
       </p>
+
       <div className="dice-el">{diceElement}</div>
       <button className="roll-btn" onClick={handleRoll}>
-        Roll
+        {gameWon ? "New Game" : "Roll"}
       </button>
     </main>
   );
