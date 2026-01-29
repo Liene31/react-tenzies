@@ -1,6 +1,6 @@
 export const Die = (props) => {
   const diceClicked = {
-    backgroundColor: props.isHeld ? "green" : "#ffffff",
+    backgroundColor: props.isHeld ? "#59E391" : "#ffffff",
   };
 
   return (

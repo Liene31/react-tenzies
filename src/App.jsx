@@ -18,7 +18,13 @@ function App() {
   }
 
   function handleRoll() {
-    setDice(getAllRandomDice());
+    setDice((prev) => {
+      return prev.map((item) => {
+        return item.isHeld === true
+          ? { ...item }
+          : { ...item, value: generateRandomNo() };
+      });
+    });
   }
 
   function toggleDice(id) {
@@ -44,6 +50,11 @@ function App() {
 
   return (
     <main>
+      <h1>Tenzies</h1>
+      <p>
+        Roll until all dice are the same. Click each die to freeze it at its
+        current value between rolls.
+      </p>
       <div className="dice-el">{diceElement}</div>
       <button className="roll-btn" onClick={handleRoll}>
         Roll
